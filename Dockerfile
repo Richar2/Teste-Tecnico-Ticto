@@ -1,5 +1,6 @@
 FROM php:8.3-fpm
 
+
 RUN apt-get update && apt-get install -y \
     pkg-config \
     libpng-dev \
@@ -39,11 +40,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-COPY project/composer.* ./
+COPY project ./
 
 RUN composer install --no-dev --optimize-autoloader --no-scripts
-
-COPY project ./
 
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
@@ -55,8 +54,17 @@ ENV APP_DEBUG=false
 
 RUN echo "opcache.enable_cli=1" >> /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini
 
+COPY docker/laravel/entrypoint.sh /usr/local/bin/entrypoint.sh
 
-COPY docker/laravel/entrypoint.sh /var/www/entrypoint.sh
-RUN chmod +x /var/www/entrypoint.sh
+ARG USER_ID=1000
+ARG GROUP_ID=1000
 
-CMD ["/var/www/entrypoint.sh", "php-fpm"]
+RUN addgroup --gid ${GROUP_ID} laravel \
+    && adduser --disabled-password --gecos "" --uid ${USER_ID} --gid ${GROUP_ID} laravel
+
+USER laravel
+
+RUN chmod +x /usr/local/bin/entrypoint.sh \
+    && dos2unix /usr/local/bin/entrypoint.sh || true
+
+CMD ["/usr/local/bin/entrypoint.sh", "php-fpm"]

@@ -13,7 +13,7 @@ services:
       - redis
     env_file:
       - ./project/.env
-    command: ["/var/www/entrypoint.sh", "php-fpm"]
+    command: ["/usr/local/bin/entrypoint.sh", "php-fpm"]
     networks:
       - laravel_network
 

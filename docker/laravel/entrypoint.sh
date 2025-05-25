@@ -1,18 +1,13 @@
-cat << 'EOF' > ./docker/laravel/entrypoint.sh
 #!/bin/bash
 
-# Espera o MySQL estar pronto
-until nc -z -v -w30 db 3306
-do
-  echo "Aguardando MySQL..."
-  sleep 5
-done
+set -e
 
-# Limpa e otimiza cache Laravel
-php artisan config:clear
-php artisan cache:clear
-php artisan config:cache
+echo "Starting Laravel App..."
 
-# Executa comando padrão
-exec "$@"
-EOF
+# Descomente para aguardar o MySQL antes de iniciar:
+# until nc -z -v -w30 mysql_db 3306; do
+#   echo "Waiting for MySQL..."
+#   sleep 1
+# done
+
+php-fpm
