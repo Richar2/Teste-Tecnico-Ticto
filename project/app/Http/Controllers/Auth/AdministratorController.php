@@ -32,6 +32,7 @@ class AdministratorController extends Controller
 
         }
     }
+    
 
 
 }
