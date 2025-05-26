@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('position');
             $table->date('birth_date');
-            $table->foreignId('administrator_id')->constrained('administrators')->onDelete('cascade');
+            $table->foreignId('administrator_id')->nullable()->constrained('administrators');
             $table->timestamps();
         });
     }

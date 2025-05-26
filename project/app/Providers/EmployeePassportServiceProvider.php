@@ -1,18 +1,23 @@
 <?php
-
 namespace App\Providers;
 
+use DateInterval;
+use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
-use Laravel\Passport\Bridge\UserRepository;
 use Laravel\Passport\Bridge\RefreshTokenRepository;
+use Laravel\Passport\Bridge\UserRepository;
+use Laravel\Passport\RefreshTokenRepository as RefreshTokenRepositoryContract;
+use Laravel\Passport\TokenRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\PasswordGrant;
-use DateInterval;
 
 class EmployeePassportServiceProvider extends ServiceProvider
 {
-   
+    public function boot()
+    {
+
+    }
+
     public function register()
     {
         $this->app->afterResolving(AuthorizationServer::class, function (AuthorizationServer $server) {
@@ -27,17 +32,26 @@ class EmployeePassportServiceProvider extends ServiceProvider
 
     protected function makeEmployeePasswordGrant()
     {
-        $userRepository = new UserRepository; 
-        $refreshTokenRepository = new RefreshTokenRepository;
 
-        $grant = new PasswordGrant(
-            $userRepository,
-            $refreshTokenRepository
+        $hasher = app(\Illuminate\Contracts\Hashing\Hasher::class);
+
+        $userRepository = new \Laravel\Passport\Bridge\UserRepository($hasher, 'employees');
+    
+        $refreshTokenRepositoryContract = app(\Laravel\Passport\RefreshTokenRepository::class);
+        $events = app(\Illuminate\Contracts\Events\Dispatcher::class);
+    
+        $bridgeRefreshTokenRepository = new \Laravel\Passport\Bridge\RefreshTokenRepository(
+            $refreshTokenRepositoryContract, 
+            $events                         
         );
-
-        $grant->setRefreshTokenTTL(new DateInterval('P1Y'));
-
+    
+        $grant = new \League\OAuth2\Server\Grant\PasswordGrant(
+            $userRepository,
+            $bridgeRefreshTokenRepository
+        );
+    
+        $grant->setRefreshTokenTTL(new \DateInterval('P1Y'));
+    
         return $grant;
     }
-
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Auth;
 
 use App\Models\Administrator;
 use App\Services\Contracts\AuthServiceInterface;
 use App\Services\Contracts\TokenServiceInterface;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\AuthenticationException;
 
 class AdministratorAuthService implements AuthServiceInterface
@@ -19,12 +19,11 @@ class AdministratorAuthService implements AuthServiceInterface
 
     public function authenticate(array $credentials): array
     {
-        if (!Auth::guard('administrator')->attempt($credentials)) {
+        $admin = Administrator::where('email', $credentials['email'])->first();
+
+        if (!$admin || !Hash::check($credentials['password'], $admin->password)) {
             throw new AuthenticationException('Unauthorized');
         }
-
-        /** @var Administrator $admin */
-        $admin = Auth::guard('administrator')->user();
 
         return $this->tokenService->createToken($admin);
     }

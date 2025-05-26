@@ -20,14 +20,15 @@ class EmployeeAuthService implements AuthServiceInterface
 
     public function authenticate(array $credentials): array
     {
-        
-        
+     
+
         $employee = Employee::where('email', $credentials['email'])->first();
 
         if (!$employee || !Hash::check($credentials['password'], $employee->password)) {
             throw new AuthenticationException('Unauthorized');
         }
-        
+
+      
         return $this->tokenService->createToken($employee);
     }
 }
