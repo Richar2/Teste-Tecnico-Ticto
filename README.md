@@ -1,158 +1,150 @@
-Teste Técnico – Desenvolvedor Back-end Sênior – Richard Carlos– Ticto
+
+# 📝 Teste Técnico – Desenvolvedor Back-end Sênior – Richard Carlos – Ticto
+
 Olá, equipe Ticto!
 
-Desenvolvido por: Richard Carlos
+Desenvolvido por: **Richard Carlos**
 
-🎯 Objetivo
-Este projeto foi desenvolvido como parte do processo seletivo da empresa Ticto para a vaga de Desenvolvedor Back-end Sênior.
+---
+
+## 🎯 Objetivo
+
+Este projeto foi desenvolvido como parte do processo seletivo da empresa **Ticto** para a vaga de **Desenvolvedor Back-end Sênior**.
 
 O sistema consiste em uma aplicação de registro de ponto eletrônico para funcionários, com foco em:
 
-✅ Estrutura de código organizada
-✅ Princípios SOLID
-✅ Boas práticas Laravel
-✅ Relacionamentos bem definidos
-✅ SQL puro para relatório
+- ✅ Estrutura de código organizada
+- ✅ Princípios SOLID
+- ✅ Boas práticas Laravel
+- ✅ Relacionamentos bem definidos
+- ✅ SQL puro para relatório
 
-🛠️ Tecnologias utilizadas
-PHP com Laravel (última versão estável)
+---
 
-MySQL (última versão estável) → Engine InnoDB
+## 🛠️ Tecnologias utilizadas
 
-Docker → isolamento de ambiente
+- **PHP com Laravel** (última versão estável)
+- **MySQL** (Engine: InnoDB)
+- **Docker** → isolamento de ambiente
+- **Composer** → dependências PHP
+- **Eloquent ORM** → manipulação de dados
+- **SQL Puro** → relatório conforme requisito
+- **API ViaCEP** → consulta automática de endereço
 
-Composer → dependências PHP
+---
 
-Eloquent ORM → manipulação de dados
+## 🐳 Ambiente de Desenvolvimento
 
-SQL Puro → relatório conforme requisito
+O projeto foi totalmente configurado para rodar em **Docker**, garantindo:
 
-API ViaCEP → consulta automática de endereço
+- ✅ Facilidade de setup
+- ✅ Portabilidade entre ambientes
+- ✅ Isolamento completo das dependências
 
-🐳 Ambiente de Desenvolvimento
-O projeto foi totalmente configurado para rodar em Docker, garantindo:
+### ▶️ Como subir o ambiente:
 
-✅ Facilidade de setup
-✅ Portabilidade entre ambientes
-✅ Isolamento completo das dependências
-
-Para subir o ambiente:
-
-bash
-Copiar
-Editar
+```bash
 docker-compose up -d
-🗂️ Arquitetura do Projeto
-Seguindo os princípios SOLID, o sistema está dividido em:
+```
 
-✅ Services → regras de negócio
-✅ Controllers → entrada de dados e respostas
-✅ Requests → validações
-✅ Models → entidades e relacionamentos
-✅ Migrations → estrutura do banco
-✅ Seeders → dados de teste
+---
 
-📚 Descrição funcional por perfil
-✅ Funcionário (Employee)
-Login → autenticação com e-mail e senha
+## 🗂️ Arquitetura do Projeto
 
-Registro de Ponto → botão único para registrar entrada ou saída, com descrição opcional
+Seguindo os princípios **SOLID**, o sistema está dividido em:
 
-Troca de Senha → alteração segura de senha
+- ✅ **Services** → regras de negócio
+- ✅ **Controllers** → entrada de dados e respostas
+- ✅ **Requests** → validações
+- ✅ **Models** → entidades e relacionamentos
+- ✅ **Migrations** → estrutura do banco
+- ✅ **Seeders** → dados de teste
 
-✅ Administrador (Admin)
-CRUD de Funcionários → criar, listar, editar e remover
+---
 
-Consulta de Registros de Ponto →
+## 📚 Descrição funcional por perfil
 
-Listagem completa de registros
+### ✅ Funcionário (Employee)
 
-Filtros por período, CPF e tipo (entrada ou saida)
+- Login → autenticação com e-mail e senha
+- Registro de Ponto → botão único para registrar entrada ou saída, com descrição opcional
+- Troca de Senha → alteração segura de senha
 
-Paginação
+### ✅ Administrador (Admin)
 
-SQL Puro — conforme exigido
+- CRUD de Funcionários → criar, listar, editar e remover
+- Consulta de Registros de Ponto → 
+  - Listagem completa
+  - Filtros por período, CPF e tipo (entrada ou saída)
+  - Paginação
+  - **SQL Puro** — conforme exigido
 
-🛠️ Relatórios
+---
+
+## 🛠️ Relatórios
+
 Relatório de registros de ponto construído com:
 
-✅ SQL Puro → sem Eloquent
-✅ Filtros:
+- ✅ **SQL Puro** → sem Eloquent
 
-Período (start_date e end_date)
+### **Filtros:**
 
-CPF do funcionário
+- Período (`start_date` e `end_date`)
+- CPF do funcionário
+- Tipo (entrada ou saída)
 
-Tipo (entrada ou saida)
+### **Campos exibidos:**
 
-✅ Campos exibidos:
+- ID do Registro
+- Nome do Funcionário
+- CPF
+- Cargo
+- Idade (calculada com `TIMESTAMPDIFF`)
+- Nome do Gestor
+- Data e Hora Completa do Registro (com segundos)
+- Tipo de Registro (entrada ou saída)
 
-ID do Registro
+### ✅ Paginação → parâmetros `page` e `per_page`
 
-Nome do Funcionário
+---
 
-CPF
+## 🔗 Relacionamentos entre as Tabelas
 
-Cargo
+```plaintext
+Admin (1) ---> (N) Employee (1) ---> (N) TimeRecord
+```
 
-Idade (calculada com TIMESTAMPDIFF)
+- **admins → employees** → Um Admin pode gerenciar muitos Employees
+- **employees → time_records** → Um Employee pode ter muitos registros de ponto
 
-Nome do Gestor
+---
 
-Data e Hora Completa do Registro (com segundos)
+## 📝 Campos importantes
 
-Tipo de Registro (entrada ou saida)
+- **time_records**
+  - `type`: entrada ou saída
+  - `description`: descrição contextual do registro
+  - `recorded_at`: data e hora com precisão de segundos
 
-✅ Paginação → parâmetros page e per_page
+---
 
-🔗 Relacionamentos entre as Tabelas
-✅ admins → employees
-Um Admin pode gerenciar muitos Employees
+## 🧩 Consultas importantes
 
-Relacionamento: 1:N
+### ✅ Consulta ViaCEP
 
-Chave estrangeira: employees.admin_id → admins.id
+Automatizada na criação ou atualização do funcionário, preenche automaticamente:
 
-✅ employees → time_records
-Um Employee pode ter muitos registros de ponto
+- Rua
+- Bairro
+- Cidade
+- Estado
+- Complemento
 
-Relacionamento: 1:N
+---
 
-Chave estrangeira: time_records.employee_id → employees.id
+### ✅ Relatório SQL puro → Exemplo de query:
 
-✅ Resumo visual:
-scss
-Copiar
-Editar
-Admin (1) ----> (N) Employee (1) ----> (N) TimeRecord
-📝 Campos importantes
-✅ time_records
-type: entrada ou saida
-
-description: descrição contextual do registro (ex.: "Entrada no expediente")
-
-recorded_at: data e hora com precisão de segundos
-
-🧩 Consultas importantes
-✅ Consulta ViaCEP
-Automatizada na criação ou atualização do funcionário.
-
-Preenche automaticamente:
-
-Rua
-
-Bairro
-
-Cidade
-
-Estado
-
-Complemento
-
-✅ Relatório SQL puro → Exemplo de query:
-sql
-Copiar
-Editar
+```sql
 SELECT 
     tr.id AS record_id,
     e.name AS employee_name,
@@ -175,42 +167,43 @@ WHERE
 ORDER BY 
     tr.recorded_at ASC
 LIMIT :limit OFFSET :offset;
-🔐 Autenticação
-Passport → autenticação baseada em tokens
+```
 
-Separação clara de guardas:
+---
 
-admin-api → para administradores
+## 🔐 Autenticação
 
-employee-api → para funcionários
+- **Laravel Passport** → autenticação baseada em tokens
+- Separação clara de guards:
+  - `admin-api` → para administradores
+  - `employee-api` → para funcionários
 
-🧪 Dados de teste (Seeders)
-Admin padrão:
+---
 
-Email: gestor@example.com
+## 🧪 Dados de teste (Seeders)
 
-Senha: password
+**Admin padrão:**
 
-Funcionário padrão:
+- Email: `gestor@example.com`
+- Senha: `password`
 
-Email: joao.silva@example.com
+**Funcionário padrão:**
 
-Senha: password
+- Email: `joao.silva@example.com`
+- Senha: `password`
 
-Registros de ponto automáticos:
+**Registros de ponto automáticos:**
 
-Entrada no expediente → 08:00
+- Entrada no expediente → 08:00
+- Saída para almoço → 12:00
+- Retorno do almoço → 13:00
+- Saída do expediente → 17:00
 
-Saída para almoço → 12:00
+---
 
-Retorno do almoço → 13:00
+## 🚀 Como executar
 
-Saída do expediente → 17:00
-
-🚀 Como executar
-bash
-Copiar
-Editar
+```bash
 # Subir containers
 docker-compose up -d
 
@@ -219,21 +212,29 @@ docker exec -it app composer install
 
 # Rodar migrations e seeders
 docker exec -it app php artisan migrate --seed
+```
 
-🎯 Diferenciais implementados
-✅ SOLID → separação clara de responsabilidades
-✅ Serviços → lógica isolada
-✅ SQL puro → conforme exigência da Ticto
-✅ Seeders completos
-✅ Docker para fácil execução
-✅ ViaCEP integrado
+---
 
-💼 Sobre a Ticto
-Este projeto foi desenvolvido como parte do processo seletivo da Ticto, uma empresa de referência no setor de soluções de tecnologia para pagamentos e sistemas financeiros.
+## 🎯 Diferenciais implementados
+
+- ✅ SOLID → separação clara de responsabilidades
+- ✅ Serviços → lógica isolada
+- ✅ SQL puro → conforme exigência da Ticto
+- ✅ Seeders completos
+- ✅ Docker para fácil execução
+- ✅ ViaCEP integrado
+
+---
+
+## 💼 Sobre a Ticto
+
+Este projeto foi desenvolvido como parte do processo seletivo da **Ticto**, uma empresa de referência no setor de soluções de tecnologia para pagamentos e sistemas financeiros.
 
 Fiquei muito feliz em realizar este teste técnico, mostrando não só domínio das tecnologias, mas também organização, clareza e foco em boas práticas.
 
-🤝 Obrigado pela oportunidade, Ticto!
+---
+
+## 🤝 Obrigado pela oportunidade, Ticto!
+
 Fico à disposição para esclarecer qualquer dúvida ou demonstrar pontos específicos do sistema!
-
-
