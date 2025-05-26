@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('time_records', function (Blueprint $table) {
             $table->id();
             $table->uuid('public_id')->unique();
+            $table->enum('type', ['entrada', 'saida']);
+            $table->string('description')->nullable();
             $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
             $table->timestamp('recorded_at');
             $table->timestamps();
