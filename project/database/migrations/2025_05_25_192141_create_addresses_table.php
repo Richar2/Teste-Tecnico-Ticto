@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
+            $table->uuid('public_id')->unique();
             $table->string('zip_code');
             $table->string('street');
             $table->string('neighborhood');

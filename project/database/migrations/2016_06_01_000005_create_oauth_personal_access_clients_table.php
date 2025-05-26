@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('time_records', function (Blueprint $table) {
-            $table->id();
-            $table->uuid('public_id')->unique();
-            $table->foreignId('employee_id')->constrained('employees')->onDelete('cascade');
-            $table->timestamp('recorded_at');
+        Schema::create('oauth_personal_access_clients', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('client_id');
             $table->timestamps();
         });
     }
@@ -25,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('time_records');
+        Schema::dropIfExists('oauth_personal_access_clients');
     }
 };
