@@ -20,8 +20,17 @@ class AppServiceProvider extends ServiceProvider
             ->needs(\App\Services\Contracts\AuthServiceInterface::class)
             ->give(\App\Services\Auth\AdministratorAuthService::class);
 
-
         $this->app->bind(TokenServiceInterface::class, PassportTokenService::class);
+
+        $this->app->bind(
+            \App\Services\Address\Contracts\ViaCepServiceInterface::class,
+            \App\Services\Address\ViaCepService::class
+        );
+
+        $this->app->bind(
+            \App\Services\Employee\Contracts\EmployeeServiceInterface::class,
+            \App\Services\Employee\EmployeeService::class
+        );
     }
 
     /**

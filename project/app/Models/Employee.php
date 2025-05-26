@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Str;
 
 class Employee extends Authenticatable
 {
@@ -16,6 +17,12 @@ class Employee extends Authenticatable
         'name', 'cpf', 'email', 'password', 'position', 'birth_date', 'administrator_id'
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($employee) {
+            $employee->public_id = (string) Str::uuid();
+        });
+    }
     public function address()
     {
         return $this->morphOne(Address::class, 'addressable');

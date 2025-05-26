@@ -28,6 +28,8 @@ class AdministratorController extends Controller
         } catch (AuthenticationException $e) {
             return $this->error($e->getMessage(), 401);
         } catch (\Throwable $e) {
+            
+            dd($e);
             return $this->error($e->getMessage(), $e->getCode());
 
         }

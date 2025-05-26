@@ -1,5 +1,6 @@
 {
     "require": {
-        "laravel/passport": "^12.4"
+        "laravel/passport": "^12.4",
+        "livewire/livewire": "^3.6"
     }
 }

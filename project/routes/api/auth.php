@@ -17,7 +17,7 @@ use App\Http\Controllers\Auth\AdministratorController;
 */
 Route::prefix('auth')->group(function () {
     Route::post('/employee', [EmployeeController::class, 'login'])->name('login-employee');
-    Route::middleware('auth:employee-api')->post('/employee/change-password', [EmployeeController::class, 'changePassword']);
+    Route::post('/employee/change-password', [EmployeeController::class, 'changePassword'])->name('change-employee')->middleware('auth:employee-api');
 });
 
 Route::prefix('auth')->group(function () {
