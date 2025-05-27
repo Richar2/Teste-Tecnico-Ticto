@@ -145,28 +145,26 @@ Automatizada na criação ou atualização do funcionário, preenche automaticam
 ### ✅ Relatório SQL puro → Exemplo de query:
 
 ```sql
-SELECT 
+SELECT
     tr.id AS record_id,
     e.name AS employee_name,
     e.cpf AS employee_cpf,
-    e.cargo AS employee_cargo,
-    TIMESTAMPDIFF(YEAR, e.data_nascimento, CURDATE()) AS employee_age,
+    e.position AS employee_position,
+    TIMESTAMPDIFF(YEAR, e.birth_date, CURDATE()) AS employee_age,
     a.name AS admin_name,
     DATE_FORMAT(tr.recorded_at, '%Y-%m-%d %H:%i:%s') AS recorded_at,
     tr.type AS record_type
-FROM 
+    FROM
     time_records tr
-INNER JOIN 
+    INNER JOIN
     employees e ON tr.employee_id = e.id
-INNER JOIN 
-    admins a ON e.admin_id = a.id
-WHERE 
-    tr.recorded_at BETWEEN :start_date AND :end_date
-    AND (:cpf IS NULL OR e.cpf = :cpf)
-    AND (:type IS NULL OR tr.type = :type)
-ORDER BY 
+    LEFT JOIN
+    administrators a ON e.administrator_id = a.id
+    WHERE
+    {$where}
+    ORDER BY
     tr.recorded_at ASC
-LIMIT :limit OFFSET :offset;
+    LIMIT {$limit} OFFSET {$offset}
 ```
 
 ---
@@ -226,6 +224,46 @@ docker exec -it app php artisan migrate --seed
 - ✅ ViaCEP integrado
 
 ---
+
+## Coleção Postman
+
+A coleção de testes da API está disponível neste [link para o Postman](https://red-water-258638.postman.co/workspace/L~0442d260-e734-404d-876e-d8404a9a7ba8/collection/7988597-5f6dba08-1600-4bd8-bed7-06467c68fe78?action=share&source=collection_link&creator=7988597).
+
+### Endpoints incluídos:
+
+### Funcionários
+
+- **Login de Funcionário:**  
+  `POST /api/auth/employee`
+
+- **Registro de Ponto:**  
+  `POST /api/time-records`
+
+- **Alteração de Senha:**  
+  `POST /api/auth/employee/change-password`
+
+### Administrador
+
+- **Login de Administrador:**  
+  `POST /api/auth/administrator`
+
+- **CRUD de Funcionário:**  
+  `POST /api/employees`  
+  `PUT /api/employees/{id}`  
+  `GET /api/employees/{id}`  
+  `GET /api/employees`  
+  `DELETE /api/employees/{id}`
+
+- **Busca de CEP:**  
+  `GET /api/address/cep?cep=04729080`
+
+- **Relatório de Pontos:**  
+  `GET /api/reports/time-records?start_date=2025-05-01&end_date=2025-05-31&cpf=98765432100&type=entrada`
+
+---
+
+**Observação:** Todos os endpoints que exigem autenticação devem ser acessados com o token gerado via login.
+
 
 ## 💼 Sobre a Ticto
 
